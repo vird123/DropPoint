@@ -23,6 +23,23 @@ contextBridge.exposeInMainWorld("electron", {
   applySettingsInConfig: (newConfig) => {
     ipcRenderer.send("applySettings", newConfig)
   },
+  // 主题相关方法
+  getCurrentTheme: (callback) => {
+    ipcRenderer.send("get-current-theme");
+    ipcRenderer.once("current-theme", (event, theme) => {
+      callback(theme);
+    });
+  },
+  onThemeChanged: (callback) => {
+    ipcRenderer.on("theme-changed", (event, theme) => {
+      callback(theme);
+    });
+  },
+  onThemeSettingChanged: (callback) => {
+    ipcRenderer.on("theme-setting-changed", (event, themeSetting) => {
+      callback(themeSetting);
+    });
+  },
 });
 
 // For settings renderer

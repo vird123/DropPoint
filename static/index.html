@@ -20,8 +20,11 @@
         border-radius: 0.5rem;
         width: 100%;
         height: 100%;
-        background-color: rgba(255, 250, 240);
+        background-color: var(--bg-color);
         backdrop-filter: blur(20px) saturate(125%);
+        transition: background-color 0.3s ease;
+        border: 1px solid var(--accent-border-color);
+        box-sizing: border-box;
       ">
     <div class="close" title="Clear">&#215;</div>
     <div id="droppoint">
@@ -41,6 +44,34 @@
   </div>
 </body>
 <style>
+  :root {
+    /* Catppuccin Latte (Light theme) */
+    --bg-color: rgba(239, 241, 245, 1); /* base */
+    --bg-blur: rgba(239, 241, 245, 0.9);
+    --text-color: #4c4f69; /* text */
+    --text-color-light: rgba(76, 79, 105, 0.7);
+    --close-bg: #d20f39; /* red */
+    --close-text: #eff1f5;
+    --border-color: #ccd0da; /* surface0 */
+    --accent-border-color: #8839ef; /* mauve */
+    --shadow-color: rgba(76, 79, 105, 0.17);
+    --shadow-color-light: rgba(76, 79, 105, 0.07);
+  }
+
+  .dark {
+    /* Catppuccin Frappe (Dark theme) */
+    --bg-color: rgba(48, 52, 70, 1); /* base */
+    --bg-blur: rgba(48, 52, 70, 0.9);
+    --text-color: #c6d0f5; /* text */
+    --text-color-light: rgba(198, 208, 245, 0.7);
+    --close-bg: #e78284; /* red */
+    --close-text: #303446;
+    --border-color: #626880; /* surface2 */
+    --accent-border-color: #ca9ee6; /* mauve */
+    --shadow-color: rgba(35, 38, 52, 0.5);
+    --shadow-color-light: rgba(35, 38, 52, 0.3);
+  }
+
   * {
     padding: 0;
     margin: 0;
@@ -80,6 +111,7 @@
   body {
     width: 100vw;
     height: 100vh;
+    transition: all 0.3s ease;
   }
 
   .close {
@@ -87,7 +119,8 @@
     height: 1rem;
     font-size: 0.8rem;
     display: flex;
-    background-color: #c0c0c0;
+    background-color: var(--close-bg);
+    color: var(--close-text);
     align-items: center;
     justify-content: center;
     position: absolute;
@@ -98,17 +131,18 @@
     cursor: pointer;
     user-select: none;
     -webkit-app-region: no-drag;
+    transition: all 0.3s ease;
   }
 
   @keyframes dragged {
     from {
       border-radius: 100px;
-      border: 2px dashed #050a0f00;
+      border: 2px dashed transparent;
     }
 
     to {
       border-radius: 6px;
-      border: 2px dashed #050a0f85;
+      border: 2px dashed var(--border-color);
     }
   }
 
@@ -126,7 +160,7 @@
     width: 140px;
     height: 140px;
     margin: 8px;
-    color: #050a0fa2;
+    color: var(--text-color);
     user-select: none;
     border: 2px transparent solid;
     -webkit-app-region: no-drag;
@@ -171,8 +205,9 @@
 
   .file-icon img {
     position: absolute;
-    /* box-shadow: 2px 2px 20px #050a0f13; */
-    filter: drop-shadow(2px 2px 4px #050a0f2c);
+    /* box-shadow: 2px 2px 20px var(--shadow-color-light); */
+    filter: drop-shadow(2px 2px 4px var(--shadow-color));
+    transition: filter 0.3s ease;
   }
 
   .file-icon img:nth-child(1) {

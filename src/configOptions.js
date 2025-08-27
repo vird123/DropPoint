@@ -3,7 +3,9 @@ const defaultAppConfig = {
   alwaysOnTop: true,
   openAtCursorPosition: false,
   shortcutAction: "toggle",
+  autoStart: false,
   debug: false,
+  darkMode: "system",
 };
 const appConfigSchema = {
   spawnOnLaunch: {
@@ -23,9 +25,18 @@ const appConfigSchema = {
     type: "string",
     title: "Shortcut behaviour",
   },
+  autoStart: {
+    type: "boolean",
+    title: "Start with system",
+  },
   debug: {
     type: "boolean",
     title: "Enable debug mode",
+  },
+  darkMode: {
+    enum: ["light", "dark", "system"],
+    type: "string",
+    title: "Theme mode",
   },
 };
 module.exports = {

@@ -53,7 +53,40 @@ const enumInput = (enumID, labelText, enumList, selectedVal) => {
   return selectInput;
 };
 
+// 主题管理函数
+const applyTheme = (theme) => {
+  const body = document.body;
+  if (theme === 'dark') {
+    body.classList.add('dark');
+  } else {
+    body.classList.remove('dark');
+  }
+};
+
+// 获取当前主题
+const getCurrentTheme = () => {
+  return new Promise((resolve) => {
+    electron.getCurrentTheme((theme) => {
+      resolve(theme);
+    });
+  });
+};
+
 window.onload = async () => {
+  // 初始化主题
+  try {
+    const currentTheme = await getCurrentTheme();
+    applyTheme(currentTheme);
+  } catch (error) {
+    console.log('Failed to get current theme, using light theme as default');
+    applyTheme('light');
+  }
+
+  // 监听主题变化
+  electron.onThemeChanged((theme) => {
+    applyTheme(theme);
+  });
+
   electron.fetchConfig();
   electron.onConfigReceived(async (_event, value) => {
 

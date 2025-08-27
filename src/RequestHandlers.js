@@ -1,4 +1,4 @@
-const { ipcMain, nativeImage } = require("electron");
+const { ipcMain, nativeImage, app } = require("electron");
 const configOptions = require("./configOptions");
 const Store = require("electron-store");
 
@@ -94,6 +94,29 @@ let fetchConfig = ipcMain.on("fetchConfig", (event) => {
 ipcMain.on("applySettings", (event, newSettings) => {
   const config = new Store(configOptions);
   console.log("Received new settings in main process");
+  
+  // Handle auto-start setting
+  if (newSettings.hasOwnProperty('autoStart')) {
+    if (newSettings.autoStart) {
+      app.setLoginItemSettings({
+        openAtLogin: true,
+        path: process.execPath,
+        args: ['--hidden']
+      });
+    } else {
+      app.setLoginItemSettings({
+        openAtLogin: false
+      });
+    }
+  }
+  
+  // Handle theme setting change
+  if (newSettings.hasOwnProperty('darkMode')) {
+    // 发送主题设置变化事件
+    const { ipcMain } = require("electron");
+    ipcMain.emit("theme-setting-changed", null, newSettings.darkMode);
+  }
+  
   config.set(newSettings);
   console.log("Applied new settings in main process");
 })
